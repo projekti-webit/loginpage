@@ -6,6 +6,10 @@
     include("top_menu.php");
     include("menu.php");
 
+    
+
+    
+
     function gjenero_tbl_kryesore() {
     	require("admin_db/lidhje_db.php");
 
@@ -22,10 +26,10 @@
 			            <td>'.$row['dataora'].'</td>
 			            <td>'.$row['email_pacienti'].'</td>
 			            <td>
-			                <button type="button" id="'.$row['id_reservim'].'" title="Modifiko" class="btn btn-warning btn-xs btn_modifiko_rezervim">
+			                <button type="button" id="'.$row['id_reservim'].'" title="Modifiko" class="btn btn-warning btn-xs btn_modifiko_rezervim" data-toggle="modal" data-target="#modal_updaterezervim">
 								<i class="fa fa-pencil-square" aria-hidden="true"> </i> 
 							</button>
-							<button type="button" id="'.$row['id_reservim'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim">
+							<button type="button" id="'.$row['id_reservim'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim" data-toggle="modal" data-target="#modal_fshirezervim">
 								<i class="fa fa-ban" aria-hidden="true"> </i> 
 							</button>
 			            </td>
@@ -78,53 +82,102 @@
 				                    <th style="width:10%;">Veprime</th>
 				                </tr>
 				            </thead> 
-				            <?php gjenero_tbl_kryesore(); ?>
+				            <?php 
+				            //if($_SESSION["roli"] =='admin')
+				            //{  gjenero_tbl_admin();
+				            	 
+				            //}else{
+				             gjenero_tbl_kryesore();
+				         //} 
+				         ?>
                     </div>
                 </div>
                 <!--/. tabela me listen e rezervimeve -->
 			</div>
     	</div>
 
+    	 <!--/.modifikimi modal -->
+
+  
+
+    	<div class="modal fade" id="modal_updaterezervim" tabindex="-1" role="dialog" aria-labelledby="modal_rezervimLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        	<form action="ruaj_rezervim.php" method="post">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                <h4 class="modal-title" id="modal_rezervimLabel">Modifiko Rezervim</h4>
+	            </div>
+        		
+	            <div class="modal-body">
+	            		<div class="form-group">
+							<input type="text" class="form-control" id="emri_p" name="emri_p" placeholder="Emri juaj" required="required" autocomplete="off" autofocus />
+						</div>
+
+						<div class="form-group">
+							<input type="text" class="form-control" id="mbiemri_p" name="mbiemri_p" placeholder="Mbiemri jua" required="required" autocomplete="off" autofocus />
+						</div>
+	                
+						<div class="form-group">
+							<input type="text" class="form-control" id="adresa_email" name="adresa_email" placeholder="adresa email" required="required" autocomplete="off" autofocus />
+						</div>
+
+						<div class="form-group">
+							<input type="text" class="form-control" id="mod_dataora" name="mod_dataora" placeholder="Zgjidhni daten" required="required" autocomplete="off"/>
+						</div>
+
+						<input type="hidden" class="form-control" id="idRezervim" name="id_mod"/>
+
+						
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Anullo</button>
+	                <button name="btn_ruaj_updaterezervim" id="btn_ruaj_updaterezervim" class="btn btn-primary" type="submit">Ruaj ndryshimet</button>
+	            </div>
+	        </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <?php 
 include("footer.php");
 ?>
+ <!--/.notepad file javascript -->
+ 
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#dataora').datetimepicker();
+	});
+	$(document).ready(function() {
+		$('#mod_dataora').datetimepicker();
+	});
+	
+
+</script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		
 		$(document).on("click", ".btn_modifiko_rezervim", function() {
-			debugger;
 			var id_mod = $(this).attr("id");
-			var detyra_edit = "modifiko_rezervim";
-			//alert(id);
-			$.ajax({
-				url:"ruaj_rezervim.php",
-				method:"POST",
-				data:{id_mod:id_mod, detyra_edit:detyra_edit},
-				//dataType:"json",
-				success: function(rezultati) {
-					alert(rezultati);
-				}
-			});
+
+			document.getElementById("idRezervim").value = id_mod;
+
 		});
+
 
 		$(document).on("click", ".btn_fshij_rezervim", function() {
 			var id_del = $(this).attr("id");
-			var detyra_del = "fshij_rezervim";
-			//alert(id);
-			$.ajax({
-				url:"ruaj_rezervim.php",
-				method:"POST",
-				data:{id_del:id_del, detyra_del:detyra_del},
-				//dataType:"json",
-				success: function(rezultati) {
-					alert(rezultati);
-				}
-			});
-		});
 
-	});
-
-
+			document.getElementById("idDelete").value = id_del;
+				}	
+			);
+	});	
 </script>

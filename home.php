@@ -22,9 +22,7 @@
                     <label><b>Username: @'.$row['username'].'</label><br>
                     <label><b>Emri: '.$row['emri'].'</label><br>
                     <label><b>Mbiemri: ' .$row['mbiemri'].'</label><br>
-                    <label><b>Kontakt: ' .$row['email'].'</label><br>
-                   
-                           
+                    <label><b>Kontakt: ' .$row['email'].'</label><br>         
                 ';
             } 
            
@@ -100,37 +98,50 @@ $message = kontrollo_fjalekalim();
 }
 }
 }
-//if (isset($_GET['success']) && empty($_GET['success'])) {
- //   echo 'Fjalekalimi u ndryshua';
-//} else {
 
-    //if (empty($_POST) == false) {
-       // ndrysho_fjalekalim();
-        
-    //}
-//}//}
 
-function ndrysho(){
-    require("admin_db/lidhje_db.php");
- if(isset($_POST["submit"])) {
-    $result = mysqli_query($db_connect, "SELECT * from perdoruesit WHERE user_id='" . $_SESSION["user_id"] . "'");
-    $row = mysqli_fetch_array($result);
-    if (md5($_POST["current_password"]) == $row["password"] && $_POST["current_password"] == $_POST["password_again"] ) {
-        mysqli_query($db_connect, "UPDATE perdoruesit set password='" . $_POST["password"] . "' WHERE user_id='" . $_SESSION["user_id"] . "'");
-        echo "Password Changed";
-    } else
-        echo "Current Password is not correct";
-    }
+function dergo_email(){
+    if(isset($_POST["dergo_mail"])){
+        $to =  trim($_POST["to"]);
+        $subject = trim($_POST["subject"]);
+        $message = trim($_POST["message"]);
+        $from = trim($_POST["from"]);
+        $headers = "From: $from";
+    
+    mail($to, $subject, $message,$headers );
+    echo "U dergua me sukses!";
 }
 
+//require 'class/class.phpmailer.php';
+ // $mail = new PHPMailer;
+  //$mail->IsSMTP();        //Sets Mailer to send message using SMTP
+  //$mail->Host = 'smtpout.secureserver.net';  //Sets the SMTP hosts
+  //$mail->Port = '80';        //Sets the default SMTP server port
+  //$mail->SMTPAuth = true;       //Sets SMTP authentication. Utilizes the Username and Password variables
+  //$mail->Username = 'user';     //Sets SMTP username
+  //$mail->Password = 'pass';     //Sets SMTP password
+ // $mail->SMTPSecure = '';       //Sets connection prefix. Options are "", "ssl" or "tls"
+ // $mail->From = $_POST["email"];     //Sets the From email address for the message
+ // $mail->FromName = $_POST["name"];    //Sets the From name of the message
+ // $mail->AddAddress('info@find2rent.com', 'Name');//Adds a "To" address
+ // $mail->AddCC($_POST["email"], $_POST["name"]); //Adds a "Cc" address
+ // $mail->WordWrap = 50;       //Sets word wrapping on the body of the message to a given number of characters
+ // $mail->IsHTML(true);       //Sets message type to HTML    
+  //$mail->Subject = $_POST["subject"];    //Sets the Subject of the message
+  //$mail->Body = $_POST["message"];    //An HTML or plain text message body
+  //if($mail->Send())        //Send an Email. Return true on success or false on error
+  //{
+  // $error = '<label class="text-success">Thank you for contacting us</label>';
+  //}
 
+}
 
 ?>
    
 
 
 
-<!--/. ktu fillon permbajtja e faqes kryesore me titullin e faqes  -->
+<!--/. ktu fillon permbajtja e faqes kryesore me titullin e faqes "   -->
 <div id="page-wrapper" >
 	<div class="header"> 
 		<h3 class="page-header">
@@ -149,7 +160,9 @@ function ndrysho(){
                     </div>
                     <div class="panel-body">
                     	<?php gjenero_infopersonale(); ?>
-                         <button name="upload_foto" id="upload_foto" class="btn btn-primary">Ngarko foto profili</button>
+                         <button name="upload_foto" id="upload_foto" class="btn btn-primary" data-toggle="modal"  data-target="#foto_upload">Ngarko foto profili</button>
+                         <!--/. <img src="echo 'uploads/'.$image; " alt="foto profili">   -->
+                         
                     </div>
                 </div>
         	</div>
@@ -160,15 +173,49 @@ function ndrysho(){
                     </div>
                     <div class="panel-body">
                     	<ul class="nav nav-pills">
-                            <li class=""><a href="#login_history" data-toggle="tab">Historiku</a>
+                            <li class=""><a href="#send_mail" data-toggle="tab">Komunikim</a>
                             </li>
                             <li class=""><a href="#ndrysho_passwd" data-toggle="tab">Siguria</a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
-                            <div class="tab-pane fade" id="login_history">
-                                <p> ktu do vendoset kur ka hyre per here te fundit ne sistem</p>
+                            <div class="tab-pane fade" id="send_mail">
+                                <p> dergo email</p>
+
+                                 <form action="home.php" method="post">
+                                     <?php dergo_email();
+                                         ?> 
+                                
+                                    <div class="form-group">
+                                     
+                                Per*:<br>
+                                <input type="text" class="form-control" placeholder = "email-i i marresit" name="to" required="required" autocomplete="off">
+                                
+                                     </div>
+                                     <div class="form-group">
+                                
+                                Subjekti *:<br>
+                                <input type="text" class="form-control" placeholder = "subjekti" name="subject"  required="required" autocomplete="off">
+
+                                
+                                     </div>
+                                     <div class="form-group">
+                                
+                                 Mesazhi *:<br>
+                                <input type="text" class="form-control" placeholder = "permbajtja e email" name="message"  required="required" autocomplete="off">
+                                
+                                
+                                 Dergon *:<br>
+                                <input type="text" class="form-control" placeholder = "email-i juaj" name="from"  required="required" autocomplete="off">
+                                
+                            </div>
+                                 <input type="hidden" name="hidden" value="1">
+                                
+                                <input type="submit"  class="btn btn-primary" name="dergo_mail" id="dergo_mail" value = "Dergo"/>
+                                
+                                </form>
+
                             </div>
                             <div class="tab-pane fade" id="ndrysho_passwd">
                                     
@@ -179,25 +226,32 @@ function ndrysho(){
                                         }
                                          ?> 
                                 <form action="home.php" method="post">
-                                <ul>
+                                    
+                                <ol>
+                                    <div class="form-group">
                                 <li>      
-                                Fjalekalimi aktual*:<br>
-                                <input type="password" name="current_password">
+                                Fjalekalimi aktual *:<br>
+                                <input type="password" class="form-control" name="current_password">
                                 </li>
+                                     </div>
+                                     <div class="form-group">
                                 <li>
-                                Fjalekalimi i ri*:<br>
-                                <input type="password" name="password">
+                                Fjalekalimi i ri *:<br>
+                                <input type="password" class="form-control" name="password">
 
                                 </li>
+                                     </div>
+                                     <div class="form-group">
                                 <li>
-                                 Konfirmo fjalekalimin e ri*:<br>
-                                <input type="password" name="password_again">
+                                 Konfirmo fjalekalimin e ri *:<br>
+                                <input type="password" class="form-control" name="password_again">
                                 </li>
+                            </div>
                                  <input type="hidden" name="change_pass" value="1">
                                 <li>
-                                <input type="submit" name="submit" id="submit"/>
+                                <input type="submit"  class="btn btn-primary" name="submit" id="submit"/>
                                 </li>
-                                </ul>
+                                </ol>
                                 </form>
                             </div>
                             
@@ -206,6 +260,32 @@ function ndrysho(){
                 </div>
         	</div>
     	</div>
+
+<div class="modal fade" id="foto_upload" tabindex="-1" role="dialog" aria-labelledby="modal_Label" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="upload.php" method="post" enctype="multipart/form-data">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title" id="modal_Label"> Zgjidhni nje foto per postim:</h4>
+              </div>
+            
+              <div class="modal-body">
+                <input type="file" name="fileToUpload" id="fileToUpload">
+                <input type="submit" value="Upload Image" name="Posto">
+                <input type="hidden" class="form-control" id="idDelete" name="id_del" />
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Anullo</button>
+                  
+
+              </div>
+          </form>
+        </div>
+    </div>
+</div>
+  
+        
 
 <?php 
 include("footer.php");

@@ -9,27 +9,45 @@
 		require("admin_db/lidhje_db.php");
 	}
 
-	if( ( isset($_POST["detyra_edit"]) ) && ( $_POST["detyra_edit"] == "modifiko_rezervim" ) ) {
+	//if( ( isset($_POST["detyra_edit"]) ) && ( $_POST["detyra_edit"] == "modifiko_rezervim" ) ) {
 
 
 			
-			if (isset($_POST["id_mod"])){
-				$a = $_POST["id_mod"];
-				echo $a;
-			}
-		}
+			//if (isset($_POST["id_mod"])){
+			//	$a = $_POST["id_mod"];
+				//echo $a;
+			//}
+		//}
 
-		if( ( isset($_POST["detyra_del"]) ) && ( $_POST["detyra_del"] == "fshij_rezervim" ) ) {
+		// if( ( isset($_POST["detyra_del"]) ) && ( $_POST["detyra_del"] == "fshij_rezervim" ) ) {
 			
-			if (isset($_POST["id_del"])){
-				$a = $_POST["id_del"];
-				echo $a;
-			}
-		}
+		// 	if (isset($_POST["id_del"])){
+		// 		$b = $_POST["id_del"];
+		// 		if(isset($_POST["btn_ruaj_fshirezervim"])){
+		// 		 $query_fshirezervim = "
+	 //                    delete from rezervim where id_reservim = '$b'
+	                   
+	 //                ";
+	                
+	 //                // ekzekutojme query per ruajtjen e te dhenave, por njekohesisht verifikojme nese query ekzekutohet me sukses
+	 //                if (mysqli_query($db_connect, $query_fshirezervim)) { // if ben return true nese ska error
+	                    
+	                    
+	 //                    $mesazhi = "OK";
+	 //                    rezultati_fshirezervim($mesazhi);
+	 //                }else{
+	 //                    $mesazhi = "NOT";
+	 //                    rezultati_fshirezervim($mesazhi);
+	 //                }
+		                    
+		//      }
+		// 	}
+		// }
+		
 
 		// funksion per cfare ndodh kur useri ben nje rezervim
 	    function rezultati_rezervim($mesazhi) { 
-	        if ($mesazhi == "OK") { // meqe do perdorim javascript na duhet libreria jquery qe e kemi tek file struktura2.php
+	        if ($mesazhi == "OK") { 
 	            echo "
 	                <script type='text/javascript'>
 	                    alert('Rezervimi u krye me sukses. Ju do te njoftoheni me tej ne emailin tuaj. Faleminderit!');
@@ -49,7 +67,7 @@
 	    }
 
 	    function rezultati_updaterezervim($mesazhi) { 
-	        if ($mesazhi == "OK") { // meqe do perdorim javascript na duhet libreria jquery qe e kemi tek file struktura2.php
+	        if ($mesazhi == "OK") { 
 	            echo "
 	                <script type='text/javascript'>
 	                    alert('Ndryshimet u ruajten me sukses.Faleminderit!');
@@ -67,6 +85,28 @@
 	            ";
 	        }
 	    }
+
+
+	   function rezultati_fshirezervim($mesazhi){
+	   	if ($mesazhi == "OK") { 
+	            echo "
+	                <script type='text/javascript'>
+	                    alert('Rezervimi u fshi me sukses!');
+	                    $('#modal_fshirezervim').modal('hide');
+	                    window.location.href = 'rezervimet_pacient.php';
+	                </script>
+	            ";
+	        } else {
+	            echo "
+	                <script type='text/javascript'>
+	                   alert('Ndryshimet NUK u ruajten me sukses!!!. Riprovoni ne nje moment te dyte ose kontaktoni me administratorin.');
+	                   $('#modal_fshirezervim').modal('hide');
+	                   window.location.href = 'rezervimet_pacient.php';
+	                </script>
+	            ";
+	        }
+
+	   }
 	    
 		if(isset($_POST["btn_ruaj_rezervim"])){
 		    
@@ -105,38 +145,22 @@
 		                    
 		     }
 		}
-
-       //function  merr_idrezervim()
-
 		
-	         
-	
-
-
 		if(isset($_POST["btn_ruaj_updaterezervim"])){
 
-			//if( ( isset($_POST["detyra_edit"]) ) && ( $_POST["detyra_edit"] == "modifiko_rezervim" ) ) {
-			
-			//if (isset($_POST["id_mod"])){
-				//$a = $_POST["id_mod"];
-				
-			//}
-		//}
 		    
-		    //var_dump($_POST);
-		    
-		    if (isset($_POST["adresa_email"], $_POST["dataora"], $_POST["doktoret"])) { // me isset mund te verifikosh me shume se nje variabel njekohesisht
+		    if (isset($_POST["adresa_email"], $_POST["mod_dataora"], $_POST["doktoret"])) { // me isset mund te verifikosh me shume se nje variabel njekohesisht
 		         
 		            // ruajme vlerat ne variabla qe do i perdorim ne query
 
 		    		$emri        		= trim($_POST["emri_p"]);
 		    		$mbiemri        	= trim($_POST["mbiemri_p"]);
 		            
-		            $dataora        	= trim($_POST["dataora"]);
+		            $dataora        	= trim($_POST["mod_dataora"]);
 		            $email           	= trim($_POST["adresa_email"]);
 		            $id_pacient         = $_SESSION['user_id'];
 		            $id_doktor         	= trim($_POST["doktoret"]);
-		            $a         	= trim($_POST["id_mod"]);
+		            $a         	        = trim($_POST["id_mod"]);
 
 		            
 		         // kujdes shiko id
@@ -158,9 +182,31 @@
 		                    
 		     }
 		}
-	
-//}
-//}
-	
+
+		if(isset($_POST["btn_ruaj_fshirezervim"])){
+
+			       $b = $_POST["id_del"];
+
+		    
+	               $query_fshirezervim = "
+	                   delete from rezervim where id_reservim = '$b'
+	                   
+	               ";
+
+
+	               // ekzekutojme query per ruajtjen e te dhenave, por njekohesisht verifikojme nese query ekzekutohet me sukses
+	               if (mysqli_query($db_connect, $query_fshirezervim)) { // if ben return true nese ska error
+	                    
+	                    
+	                   $mesazhi = "OK";
+	                   rezultati_fshirezervim($mesazhi);
+	               }else{
+	                   $mesazhi = "NOT";
+	                   rezultati_fshirezervim($mesazhi);
+	               }
+		                    
+		    }
+		
+		
 ?>
 

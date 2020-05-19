@@ -18,14 +18,7 @@
 			            <td>'.$row['emri'].'</td>
 			            <td>'.$row['mbiemri'].'</td>
 			            <td>'.$row['email'].'</td>
-			            <td>
-			                <button type="button" id="'.$row['user_id'].'" title="Modifiko" class="btn btn-warning btn-xs btn_modifiko_rezervim">
-								<i class="fa fa-pencil-square" aria-hidden="true"> </i> 
-							</button>
-							<button type="button" id="'.$row['user_id'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim">
-								<i class="fa fa-ban" aria-hidden="true"> </i> 
-							</button>
-			            </td>
+			            
 		        	</tr>
 		    	';
 		    } 
@@ -74,7 +67,7 @@
 				                    <th>Mbiemri</th>
 				                    <th>Email</th>
 				                    
-				                    <th style="width:10%;">Veprime</th>
+				                    
 				                </tr>
 				            </thead> 
 				            <?php gjenero_tbl_staf(); ?>

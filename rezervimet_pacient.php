@@ -35,11 +35,12 @@
 	 		            <tr>
 	 			            <td>' .$row['id_doktori']. '</td>
 	 			            <td>' .$row['dataora']. '</td> 
+	 			            <td>'.$row['email_pacienti'].'</td>
 	 			            <td>
 			                <button type="button" id="'.$row['id_reservim'].'" title="Modifiko" class="btn btn-warning btn-xs btn_modifiko_rezervim"  data-toggle="modal" data-target="#modal_updaterezervim">
 								<i class="fa fa-pencil-square" aria-hidden="true"> </i> 
 							</button>
-							<button type="button" id="'.$row['id_reservim'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim">
+							<button type="button" id="'.$row['id_reservim'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim" data-toggle="modal" data-target="#modal_fshirezervim">
 								<i class="fa fa-ban" aria-hidden="true"> </i> 
 							</button>
 			            </td>
@@ -55,6 +56,42 @@
 	     	';	    
      	}
 	 }
+
+	 function gjenero_tbl_admin(){
+    		require("admin_db/lidhje_db.php");
+
+	    $query = " SELECT * FROM rezervim";
+
+	    $tedhena = mysqli_query($db_connect, $query);
+
+	    if ($tedhena) {
+	    	while ($row = mysqli_fetch_array($tedhena)) { 
+		    	echo '
+		            <tr>
+			            <td>'.$row['id_doktori'].'</td>
+			            <td>'.$row['dataora'].'</td>
+			            <td>'.$row['email_pacienti'].'</td>
+			            <td>
+			                <button type="button" id="'.$row['id_reservim'].'" title="Modifiko" class="btn btn-warning btn-xs btn_modifiko_rezervim" data-toggle="modal" data-target="#modal_updaterezervim">
+								<i class="fa fa-pencil-square" aria-hidden="true"> </i> 
+							</button>
+							<button type="button" id="'.$row['id_reservim'].'" title="Fshij" class="btn btn-danger btn-xs btn_fshij_rezervim" data-toggle="modal" data-target="#modal_fshirezervim">
+								<i class="fa fa-ban" aria-hidden="true"> </i> 
+							</button>
+			            </td>
+		        	</tr>
+		    	';
+		    } 
+		    echo '</table>';
+	    } else {
+	    	echo '
+	    		<div class="alert alert-danger">
+					<center><strong>Nuk u gjet asnje informacion!!</strong></center>
+				</div>
+				</table>
+	    	';   
+    	}
+	}
     
 
 ?>
@@ -90,12 +127,15 @@
 
 				                    <th>Kodi i doktorit</th>
 				                    <th>Data dhe ora e rezervuar</th>
-				                    
-				                    
+				                    <th>Email i pacineti</th>
 				                    <th style="width:10%;">Veprime</th>
 				                </tr>
 				            </thead> 
-				           <?php gjenero_rezervime_temeparshme(); ?>
+				           <?php if($_SESSION["roli"] =='admin')
+				            {  gjenero_tbl_admin();
+				            	 
+				            }else{ gjenero_rezervime_temeparshme();}
+				             ?>
                             
                         </table>
 				            
@@ -134,7 +174,7 @@ include("footer.php");
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" id="dataora" name="dataora" placeholder="Zgjidhni daten" required="required" />
+							<input type="text" class="form-control" id="dataora" name="dataora" placeholder="Zgjidhni daten" required="required" autocomplete="off" />
 						</div>
 
 						<div>
@@ -169,7 +209,7 @@ include("footer.php");
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" id="mbiemri_p" name="mbiemri_p" placeholder="Mbiemri jua" required="required" autocomplete="off" autofocus />
+							<input type="text" class="form-control" id="mbiemri_p" name="mbiemri_p" placeholder="Mbiemri juaj" required="required" autocomplete="off" autofocus />
 						</div>
 	                
 						<div class="form-group">
@@ -177,10 +217,10 @@ include("footer.php");
 						</div>
 
 						<div class="form-group">
-							<input type="text" class="form-control" id="dataora" name="dataora" placeholder="Zgjidhni daten" required="required" />
+							<input type="text" class="form-control" id="mod_dataora" name="mod_dataora" placeholder="Zgjidhni daten" required="required" autocomplete="off"/>
 						</div>
 
-						<input type="hidden" class="form-control" id="idRezervim" name="id_mod" />
+						<input type="hidden" class="form-control" id="idRezervim" name="id_mod"/>
 
 						<div>
 							<div class="sub-title">Zgjidh Doktorin</div>
@@ -199,18 +239,45 @@ include("footer.php");
     </div>
 </div>
 
-<form id="deleteForm">
-	<input type="hidden" name="" id="idDelete">
-	</form>
+
+
+	<div class="modal fade" id="modal_fshirezervim" tabindex="-1" role="dialog" aria-labelledby="modal_rezervimLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        	<form action="ruaj_rezervim.php" id = "deleteForm" method="post">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                <h4 class="modal-title" id="modal_rezervimLabel">Fshi Rezervim</h4>
+	            </div>
+        		
+	            <div class="modal-body">
+	            	<p class="alert alert-error">Are you sure to delete ?</p>	
+	            	<input type="hidden" class="form-control" id="idDelete" name="id_del" />
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Anullo</button>
+	                <button name="btn_ruaj_fshirezervim" id="btn_ruaj_fshirezervim" class="btn btn-primary" type="submit">Fshi</button>
+
+	            </div>
+	        </form>
+        </div>
+    </div>
+</div>
+	
+	
 
 <script type="text/javascript">
 
 	$(document).ready(function() {
 		$('#dataora').datetimepicker();
 	});
+	$(document).ready(function() {
+		$('#mod_dataora').datetimepicker();
+	});
 	
 
 </script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -224,20 +291,9 @@ include("footer.php");
 
 		$(document).on("click", ".btn_fshij_rezervim", function() {
 			var id_del = $(this).attr("id");
-			var detyra_del = "fshij_rezervim";
-			//alert(id);
-			$.ajax({
-				url:"ruaj_rezervim.php",
-				method:"POST",
-				data:{id_del:id_del, detyra_del:detyra_del},
-				//dataType:"json",
-				success: function(rezultati) {
-					alert(rezultati);
-				}
-			});
-		});
 
-	});
-
-
+			document.getElementById("idDelete").value = id_del;
+				}	
+			);
+	});	
 </script>
