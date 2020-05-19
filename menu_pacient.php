@@ -15,6 +15,9 @@
             <li>
                 <a href="stafi.php"><i class="fa fa-desktop"></i> Stafi</a>
             </li>
+            <li>
+                <a href="kartela.php"><i class="fa fa-desktop"></i> Kartela Ime</a>
+            </li>
         </ul>
     </div>
 </nav>

@@ -15,6 +15,9 @@
             <li>
                 <a href="rezervimet.php"><i class="fa fa-desktop"></i> Rezervimet</a>
             </li>
+            <li>
+                <a href="recetat.php"><i class="fa fa-desktop"></i> Recetat e mia</a>
+            </li>
         </ul>
     </div>
 </nav>

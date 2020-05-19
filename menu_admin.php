@@ -9,14 +9,12 @@
             <li>
                 <a href="home.php"><i class="fa fa-dashboard"></i> Faqja kryesore</a>
             </li>
-            <li>
-                <a href="pacientet.php"><i class="fa fa-desktop"></i> Pacientet</a>
+           <li>
+                <a href="recetat.php"><i class="fa fa-desktop"></i> Recetat</a>
             </li>
+            
             <li>
-                <a href="stafi.php"><i class="fa fa-desktop"></i> Stafi</a>
-            </li>
-            <li>
-                <a href="rezervimet.php"><i class="fa fa-desktop"></i> Rezervimet</a>
+                <a href="rezervimet_pacient.php"><i class="fa fa-desktop"></i> Rezervimet</a>
             </li>
             <li>
                 <a href="perdoruesit.php"><i class="fa fa-desktop"></i> Perdoruesit</a>
